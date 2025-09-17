@@ -56,6 +56,7 @@ func createStudent(c *gin.Context){
 		c.JSON(http.StatusBadRequest, gin.H{"error" : err.Error()})
 		return
 	}
+	
 	if (newStudent.Name == ""){
 		c.JSON(http.StatusBadRequest, gin.H{"error" : "name is required"})
 		return

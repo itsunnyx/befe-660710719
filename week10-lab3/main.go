@@ -124,6 +124,47 @@ func getAllBooks(c *gin.Context) {
 	c.JSON(http.StatusOK, books)
 }
 
+func getNewBooks(c *gin.Context) {
+
+    var rows *sql.Rows
+    var err error
+
+    // ลูกค้าถาม "มีหนังสืออะไรบ้าง"
+    rows, err = db.Query("SELECT id, title, author, isbn, year, price, created_at, updated_at FROM books order by created_at desc limit 5")
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    defer rows.Close() // ต้องปิด rows เสมอ เพื่อคืน Connection กลับ pool
+
+    var books []Book
+    for rows.Next() {
+        var book Book
+        err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.ISBN, &book.Year, &book.Price, &book.Created_At, &book.Updated_At)
+        if err != nil {
+            // handle error
+        }
+        books = append(books, book)
+    }
+	if books == nil {
+		books = []Book{}
+	}
+
+	yearQuery := c.Query("year")
+	if (yearQuery != "") {
+		filter := []Book{}
+		for _, book := range books {
+			if (fmt.Sprint(book.Year) == yearQuery){
+				filter = append(filter, book)
+			}
+		}
+		c.JSON(http.StatusOK, filter)
+		return
+	}
+
+	c.JSON(http.StatusOK, books)
+}
+
 // @Summary Get book by ID
 // @Description Get details of a book by ID
 // @Tags Books
@@ -274,6 +315,7 @@ func main(){
 	r := gin.Default()
 	r.Use(cors.Default())
 
+
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/health", func(c *gin.Context){
@@ -288,6 +330,7 @@ func main(){
 	api := r.Group("/api/v1")
 	{
 		api.GET("/books", getAllBooks)
+        api.GET("/books/new", getNewBooks)
 		api.GET("/books/:id", getBook)
 		api.POST("/books", createBook)
 		api.PUT("/books/:id", updateBook)

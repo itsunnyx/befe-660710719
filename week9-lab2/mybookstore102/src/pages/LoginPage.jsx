@@ -16,7 +16,8 @@ const LoginPage = () => {
     if (username === 'bookstoreadmin' && password === 'ManageBook68') {
       // Store authentication token/flag
       localStorage.setItem('isAdminAuthenticated', 'true');
-      navigate('/store-manager/add-book');
+      navigate('/store-manager/all-book');
+      // navigate('/store-manager/add-book');
     } else {
       setError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
@@ -29,7 +30,7 @@ const LoginPage = () => {
           <div className="mx-auto h-16 w-16 bg-white rounded-full flex items-center justify-center">
             <LockClosedIcon className="h-10 w-10 text-viridian-600" />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-black">
             เข้าสู่ระบบ BackOffice
           </h2>
           <p className="mt-2 text-center text-sm text-viridian-100">
@@ -95,7 +96,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 className="w-full flex justify-center py-3 px-4 border border-transparent
-                  rounded-lg shadow-sm text-sm font-medium text-white bg-viridian-600
+                  rounded-lg shadow-sm text-sm font-medium text-white bg-green-600
                   hover:bg-viridian-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                   focus:ring-viridian-500 transition-colors duration-200"
               >

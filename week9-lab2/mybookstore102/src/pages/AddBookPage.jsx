@@ -308,8 +308,8 @@ const AddBookPage = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`flex-1 py-3 px-6 rounded-lg font-semibold text-white
-                    transition-colors duration-200
+                  className={`flex-1 py-3 px-6 rounded-lg font-semibold text-black
+                    transition-colors duration-200 border-2
                     ${isSubmitting
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-viridian-600 hover:bg-viridian-700'}`}

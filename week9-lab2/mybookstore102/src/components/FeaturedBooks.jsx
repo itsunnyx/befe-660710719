@@ -13,7 +13,7 @@ const FeaturedBooks = () => {
         setLoading(true);
         
         // เรียก API เพื่อดึงข้อมูลหนังสือ
-        const response = await fetch('/api/v1/books/');
+        const response = await fetch('/api/v1/books/featured');
 
         if (!response.ok) {
           throw new Error('Failed to fetch books');

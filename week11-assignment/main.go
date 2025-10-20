@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
+    "github.com/joho/godotenv"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -32,15 +33,26 @@ var db *sql.DB
 
 func initDB() {
 
-	var err error
-	host := getEnv("DB_HOST", "localhost")
-	name := getEnv("DB_NAME", "bookstore")
-	user := getEnv("DB_USER", "bookstore_user")
-	password := getEnv("DB_PASSWORD", "your_strong_password")
-	port := getEnv("DB_PORT", "5432")
+    if err := godotenv.Load(); err != nil {
+        log.Println("⚠️  .env not found, using system environment variables")
+    }
 
-	conSt := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name)
+	var err error
+	// host := getEnv("DB_HOST", "localhost")
+	// name := getEnv("DB_NAME", "bookstore")
+	// user := getEnv("DB_USER", "bookstore_user")
+	// password := getEnv("DB_PASSWORD", "your_strong_password")
+	// port := getEnv("DB_PORT", "5432")
+
+	// conSt := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, name)
 	// fmt.Println(conSt)
+    conSt := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+	)
 	db, err = sql.Open("postgres", conSt)
 	if err != nil {
 		log.Fatal("failed to open database")
